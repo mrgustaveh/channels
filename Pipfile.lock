@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0cd4acd7e70fb4a58bffc5557fc2be8be944c9730cef43467eadcb5b44f10bd9"
+            "sha256": "883d9082c904424c6f27656b71d6fd7e2f94bf30834b4b679be0f36fd5b4ecc0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -238,6 +238,15 @@
             "markers": "python_version >= '3.9'",
             "version": "==4.3.2"
         },
+        "channels-redis": {
+            "hashes": [
+                "sha256:48f3e902ae2d5fef7080215524f3b4a1d3cea4e304150678f867a1a822c0d9f5",
+                "sha256:740ee7b54f0e28cf2264a940a24453d3f00526a96931f911fcb69228ef245dd2"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.9'",
+            "version": "==4.3.0"
+        },
         "clerk-backend-api": {
             "hashes": [
                 "sha256:777a63a2821cb8965db81003b9d23a34443eaeb4cbedb4f6d98eb0037b934164",
@@ -445,7 +454,7 @@
                 "sha256:fac4be746328f90caa3cd4bc67e6fe36ca2bf61d5c6eb6d895b6527e3f05071e",
                 "sha256:fffee09044073e69f2bad787071aeec727183e7580443dfeb8556cbf1978d162"
             ],
-            "markers": "platform_python_implementation == 'CPython'",
+            "markers": "python_version >= '3.9'",
             "version": "==1.1.2"
         },
         "packaging": {
@@ -709,6 +718,14 @@
                 "sha256:c981cb0a3fd84e8602d7afc209522773b94c1c2446a3c710a75b06fe1beae329"
             ],
             "version": "==25.3.0"
+        },
+        "redis": {
+            "hashes": [
+                "sha256:23c52b208f92b56103e17c5d06bdc1a6c2c0b3106583985a76a18f83b265de2b",
+                "sha256:b1cc3cfa5a2cb9c2ab3ba700864fb0ad75617b41f01352ce5779dabf6d5f9c3c"
+            ],
+            "markers": "python_version >= '3.10'",
+            "version": "==7.1.0"
         },
         "service-identity": {
             "hashes": [

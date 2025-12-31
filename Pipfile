@@ -11,6 +11,7 @@ django-cors-headers = "*"
 psycopg2-binary = "*"
 clerk-backend-api = "*"
 httpx = "*"
+channels-redis = "*"
 
 [dev-packages]
 
