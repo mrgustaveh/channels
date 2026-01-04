@@ -145,3 +145,5 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+
+CLERK_SECRET_KEY=env.str('CLERK_SECRET_KEY')
