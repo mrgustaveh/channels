@@ -1,1 +1,1 @@
-fun project exploring channels for persistent connections
+project exploring channels for persistent multiple client connections
