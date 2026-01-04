@@ -1,0 +1,145 @@
+---
+alwaysApply: false
+---
+
+# Django Channels Project - Cursor Rules
+
+## Project Overview
+
+This is a Django Channels application for persistent multiple client connections (real-time chat/websocket functionality). The project uses:
+- Django 6.0 with Channels 4.3.2 for WebSocket support
+- Clerk for authentication
+- PostgreSQL for the database
+- Redis for channel layers
+- Django REST Framework for API endpoints
+- Daphne as ASGI server
+
+## Code Style & Conventions
+
+- Follow Django best practices and PEP 8
+- Use Django's app-based architecture (`user/`, `chat/`, `core/`)
+- Environment variables are managed via `django-environ` (see `core/settings.py`)
+- Custom middleware location: `user/middleware/`
+- Utility functions location: `user/utils/`
+- Use type hints where appropriate
+- Keep functions and classes focused and single-purpose
+
+## Project Structure
+
+- **Settings**: `core/settings.py` - Main Django configuration
+- **URL routing**: `core/urls.py` - URL patterns
+- **ASGI config**: `core/asgi.py` - ASGI application and protocol routing
+- **Middleware**: `user/middleware/` - Custom middleware classes
+- **Utilities**: `user/utils/` - Helper functions and utilities
+- **Models**: Define in respective app `models.py` files (`user/models.py`, `chat/models.py`)
+- **Views**: Define in respective app `views.py` files (`user/views.py`, `chat/views.py`)
+
+## Authentication Patterns
+
+- Clerk authentication is the primary authentication mechanism
+- Authentication is handled via middleware: `user.middleware.clerkauth.ClerkAuthMiddleware`
+- Clerk authentication token is passed via `Authorization` header
+- Token verification logic is in `user/utils/clerkauth.py` using `clerk_backend_api`
+- Middleware exempts `/admin` paths from authentication
+- Raises `PermissionDenied` for invalid or missing tokens
+- When implementing new endpoints, ensure they respect the authentication middleware unless explicitly exempted
+
+## Database & Models
+
+- PostgreSQL backend (configured via environment variables)
+- Models should be defined in respective app `models.py` files
+- Always use Django migrations for schema changes (`python manage.py makemigrations`, `python manage.py migrate`)
+- Use descriptive model names and field names
+- Add appropriate `__str__` methods to models for better admin interface
+- Use Django's built-in model fields and validators where possible
+
+## Channels & WebSockets
+
+- ASGI application is configured in `core/asgi.py`
+- Channel layers use Redis backend (configured in `CHANNEL_LAYERS` setting)
+- Protocol routing is handled via `ProtocolTypeRouter` in `core/asgi.py`
+- When implementing WebSocket consumers:
+  - Place them in appropriate app directories (e.g., `chat/consumers.py`)
+  - Use proper async/await patterns
+  - Handle connection, disconnection, and message events appropriately
+  - Use channel groups for broadcasting messages to multiple clients
+
+## API Patterns
+
+- Use Django REST Framework for all API endpoints
+- JSON-only API (no HTML rendering) - configured in `REST_FRAMEWORK` settings
+- CORS is enabled for frontend communication (see `CORS_ALLOWED_ORIGINS` in settings)
+- Use DRF serializers for request/response validation
+- Use DRF viewsets or APIView classes for endpoints
+- Return appropriate HTTP status codes
+- Handle errors consistently with DRF exception handling
+
+## Environment Variables
+
+The following environment variables are required (managed via `django-environ`):
+
+- `SECRET_KEY` - Django secret key
+- `DEBUG` - Debug mode flag (boolean)
+- `DB_NAME` - PostgreSQL database name
+- `DB_USER` - PostgreSQL database user
+- `DB_PASSWORD` - PostgreSQL database password
+- `DB_HOST` - PostgreSQL database host
+- `DB_PORT` - PostgreSQL database port
+- `CLERK_SECRET_KEY` - Clerk API secret key (used in `user/utils/clerkauth.py`)
+
+Always use `env.str()`, `env.bool()`, `env.int()` etc. from `django-environ` to access environment variables in settings.
+
+## Testing
+
+- Test files are located in `tests.py` within each app
+- Follow Django testing conventions
+- Use Django's `TestCase` or `TransactionTestCase` as appropriate
+- Test authentication middleware behavior
+- Test WebSocket consumers and channel layer interactions
+- Mock external services (like Clerk API) in tests
+
+## Documentation
+
+- Keep code self-documenting with clear naming conventions
+- Add docstrings for complex functions, classes, and modules
+- Use Google-style or NumPy-style docstrings
+- Document API endpoints with clear descriptions
+- Update README.md when adding significant features
+
+## Common Patterns
+
+### Adding a New API Endpoint
+
+1. Create a serializer in the app's `serializers.py` (if needed)
+2. Create a view in the app's `views.py` using DRF
+3. Add URL pattern in `core/urls.py` or app-specific URL configuration
+4. Ensure authentication middleware applies (unless exempted)
+
+### Adding a New Model
+
+1. Define model in app's `models.py`
+2. Create and run migrations
+3. Register with admin in app's `admin.py` if needed
+4. Add appropriate serializers if API access is needed
+
+### Adding WebSocket Consumer
+
+1. Create consumer class in app's `consumers.py`
+2. Add routing configuration in `core/asgi.py` or app-specific routing
+3. Use channel groups for multi-client communication
+4. Handle authentication in consumer if needed
+
+### Adding Middleware
+
+1. Create middleware class in `user/middleware/` or appropriate location
+2. Add to `MIDDLEWARE` list in `core/settings.py` in correct order
+3. Ensure proper exception handling
+
+## Important Notes
+
+- The project is in early stages - `chat/` and `user/` models/views are currently empty
+- Clerk authentication is the primary auth mechanism - do not use Django's built-in auth system
+- Always test WebSocket functionality with multiple clients to ensure proper channel layer behavior
+- Redis must be running for channel layers to work properly
+- Use async/await patterns for all Channels-related code
+
