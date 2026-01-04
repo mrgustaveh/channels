@@ -1,1 +1,1 @@
-project exploring channels for persistent multiple client connections
+exploring channels for persistent multiple client connections
